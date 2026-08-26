@@ -307,6 +307,12 @@ const CHAPTERS = [
 /* 全unitをフラットに展開 */
 const UNITS = CHAPTERS.flatMap(c => c.units);
 
+/* 本編が完成している単元のID → リンク先ファイル */
+const READY_LINKS = {
+  'geo_j01': 'geo01.html',
+  'geo_r01': 'japanesechirikyushu.html',
+};
+
 let currentFilter = 'all';
 
 function getABC(id){ return localStorage.getItem('gamba_geo_review_' + id); }
@@ -341,9 +347,9 @@ function buildCards(){
       card.className = 'unit-card'
         + (abc === 'A' ? ' review-a' : abc === 'B' ? ' review-b' : abc === 'C' ? ' review-c' : '');
 
-      /* 本編リンク（geo01.htmlは第12〜19講に対応、他は準備中） */
-      const mainUrl = u.id === 'geo_j01' ? 'geo01.html' : '#';
-      const isReady = u.id === 'geo_j01';
+      /* 本編リンク（完成した単元のみ本編URLを設定、他は準備中） */
+      const mainUrl = READY_LINKS[u.id] || '#';
+      const isReady = !!READY_LINKS[u.id];
       const mainBtn = isReady
         ? `<a class="link-btn lb-main" href="${mainUrl}">📖 本編</a>`
         : `<span class="link-btn lb-disabled">📖 準備中</span>`;
